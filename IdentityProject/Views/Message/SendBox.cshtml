@@ -1,6 +1,7 @@
 ﻿@model List<IdentityProject.Entities.Message>
+
 @{
-    ViewData["Title"] = "Sentbox";
+    ViewData["Title"] = "SendBox";
     Layout = "~/Views/Shared/_MessageLayout.cshtml";
 }
 
@@ -11,6 +12,19 @@
         <button type="submit" class="btn btn-dark"><i class="fa fa-search"></i></button>
     </div>
 </form>
+
+@if (ViewBag.SuccessMessage != null)
+{
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'İşlem Başarılı!',
+            text: '@ViewBag.SuccessMessage',
+            confirmButtonText: 'Tamam'
+        });
+    </script>
+}
 
 <form method="post" action="/Message/ChangeMessageStatus">
     <div class="toolbar mb-3">
@@ -50,23 +64,6 @@
         Seçilenleri Çöp Kutusuna Taşı
     </button>
 </form>
-
-@section Scripts {
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-        @if (TempData["MessageStatusChanged"] != null)
-        {
-            <text>
-                Swal.fire({
-                    icon: 'success',
-                    title: 'İşlem Başarılı!',
-                    text: '@TempData["MessageStatusChanged"]',
-                    confirmButtonText: 'Tamam'
-                });
-            </text>
-        }
-    </script>
-}
 
 
 

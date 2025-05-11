@@ -44,15 +44,15 @@ namespace IdentityProject.Controllers
             var values = await _userManager.FindByNameAsync(User.Identity.Name);
             string emailValue = values.Email;
 
-      
+            // Gönderilen mesajları getir
             var sendMessageList = _context.Messages
-                                          .Where(x => x.SenderEmail == emailValue && !x.IsDeleted);
+                                           .Where(x => x.SenderEmail == emailValue && !x.IsDeleted);
 
-           
+            // Arama yapılmışsa filtrele
             if (!string.IsNullOrEmpty(search))
             {
                 sendMessageList = sendMessageList.Where(m => m.Subject.Contains(search) || m.ReceiverEmail.Contains(search));
-                ViewBag.v1 = $"Arama Sonuclari: '{search}'";
+                ViewBag.v1 = $"Arama Sonuçları: '{search}'";
             }
             else
             {
@@ -61,8 +61,16 @@ namespace IdentityProject.Controllers
 
             // Mesajları tarih sırasına göre getir
             var model = await sendMessageList.OrderByDescending(x => x.SendDate).ToListAsync();
+
+            // TempData'dan gelen mesajı sayfada göstermek
+            if (TempData["MessageSent"] != null)
+            {
+                ViewBag.SuccessMessage = "Mesaj gonderildi.";
+            }
+
             return View(model);
         }
+
 
 
 
@@ -74,21 +82,18 @@ namespace IdentityProject.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateMessage(Message message)
         {
-
             var values = await _userManager.FindByNameAsync(User.Identity.Name);
             string senderEmail = values.Email;
-
 
             message.SenderEmail = senderEmail;
             message.IsRead = false;
             message.SendDate = DateTime.Now;
 
-
             _context.Messages.Add(message);
             await _context.SaveChangesAsync();
 
-            // Mesajın başarıyla gönderildiğini belirtmek için TempData kullan
-            TempData["MessageSent"] = "true";
+            // Mesaj başarıyla gönderildiğinde TempData'ya mesaj ekleyelim
+            TempData["MessageSent"] = "Mesaj basarıyla gönderildi.";
 
             // SendBox sayfasına yönlendir
             return RedirectToAction("SendBox");
