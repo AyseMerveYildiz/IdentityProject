@@ -1,0 +1,48 @@
+﻿@{
+    ViewData["Title"] = "Profile Detail";
+    Layout = "~/Views/Shared/_MessageLayout.cshtml";
+}
+
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="media align-items-center mb-4">
+                            <img class="mr-3" src="@ViewBag.profilePicture" width="80" height="80" style="border-radius:50%" alt="Profile Image">
+                            <div class="media-body">
+                                <h3 class="mb-0">@ViewBag.name @ViewBag.surname</h3>
+                                <p class="text-muted mb-0">#@ViewBag.username</p>
+                            </div>
+                        </div>
+                        <div class="row mb-5">
+                            <div class="col">
+                                <div class="card card-profile text-center">
+                                    <span class="mb-1 text-primary"><i class="fas fa-mail-bulk"></i></span>
+                                    <h3 class="mb-0">@ViewBag.inboxMessageCount</h3>
+                                    <p class="text-muted px-4">Gelen Mesaj Sayısı</p>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card card-profile text-center">
+                                    <span class="mb-1 text-warning"><i class="fas fa-paper-plane"></i></span>
+                                    <h3 class="mb-0">@ViewBag.sendboxCount</h3>
+                                    <p class="text-muted">Gönderilen Mesaj Sayısı</p>
+                                </div>
+                            </div>
+                        </div>
+                        <h4>Bilgilerim</h4>
+                        <ul class="card-profile__info">
+                            <li><strong class="text-dark mr-4">Email:</strong> <span>@ViewBag.email</span></li>
+                        </ul>
+                        <ul class="card-profile__info">
+                            <li><strong class="text-dark mr-4">Telefon Numarası:</strong> <span>@ViewBag.phone</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

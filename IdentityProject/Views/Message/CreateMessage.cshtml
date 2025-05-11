@@ -1,0 +1,44 @@
+﻿@model Message
+@{
+    ViewData["Title"] = "CreateMessage";
+    Layout = "~/Views/Shared/_MessageLayout.cshtml";
+}
+
+<h2>Yeni Mesaj Oluşturma Sayfası</h2>
+
+<div class="compose-content mt-5">
+    <form method="post">
+        <div class="form-group">
+            <input type="text" class="form-control bg-transparent" asp-for="ReceiverEmail" placeholder=" Kime">
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control bg-transparent" asp-for="Subject" placeholder=" Konu">
+        </div>
+        <div class="form-group">
+            <textarea class="textarea_editor form-control bg-light" rows="15" asp-for="MessageDetail" placeholder="Mesajınızı yazın..."></textarea>
+        </div>
+        <div class="text-left m-t-15">
+            <button class="btn btn-primary m-b-30 m-t-15 f-s-14 p-l-20 p-r-20 m-r-10" type="submit">
+                <i class="fa fa-paper-plane m-r-5"></i> Gönder
+            </button>
+            <a href="/Message/Inbox" class="btn btn-dark m-b-30 m-t-15 f-s-14 p-l-20 p-r-20">
+                <i class="ti-close m-r-5 f-s-12"></i> İptal Et
+            </a>
+        </div>
+    </form>
+</div>
+
+@* @section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        // Sayfa yüklendiğinde test amaçlı bir alert göster
+        window.onload = function () {
+            Swal.fire({
+                title: 'Test Başarılı!',
+                text: 'SweetAlert2 düzgün çalışıyor.',
+                icon: 'success',
+                confirmButtonText: 'Tamam'
+            });
+        }
+    </script>
+} *@

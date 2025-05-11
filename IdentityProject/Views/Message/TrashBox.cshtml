@@ -1,0 +1,59 @@
+﻿@model List<IdentityProject.Entities.Message>
+@{
+    ViewData["Title"] = "Çöp Kutusu";
+    Layout = "~/Views/Shared/_MessageLayout.cshtml";
+}
+
+<h3 class="mb-3">@(@ViewBag.v1 ?? "Çöp Kutusu")</h3>
+
+<form method="post" action="/Message/DeletePermanently">
+    <table class="table table-striped table-bordered align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col">Seç</th>
+                <th scope="col">Alıcı Email</th>
+                <th scope="col">Konu</th>
+                <th scope="col">Mesaj</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <input type="checkbox" id="chk_@item.MessageId" name="messageIds" value="@item.MessageId">
+                    </td>
+                    <td>@item.ReceiverEmail</td>
+                    <td>@item.Subject</td>
+                    <td>
+                        <a href="/Message/MessageDetail/@item.MessageId" class="text-decoration-none text-primary">
+                            @item.MessageDetail?.Substring(0, Math.Min(20, item.MessageDetail.Length))...
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <button type="submit" class="btn btn-danger mt-3">
+        Seçilenleri Kalıcı Olarak Sil
+    </button>
+</form>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        @if (TempData["MessageStatusChanged"] != null)
+        {
+            <text>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'İşlem Başarılı!',
+                    text: '@TempData["MessageStatusChanged"]',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Tamam'
+                });
+            </text>
+        }
+    </script>
+}

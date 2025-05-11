@@ -1,0 +1,153 @@
+﻿@model List<IdentityProject.Entities.Message>
+@{
+    ViewData["Title"] = "Inbox";
+    Layout = "~/Views/Shared/_MessageLayout.cshtml";
+}
+
+<form method="get" action="@Context.Request.Path" class="mb-3">
+    <div class="input-group">
+        <input type="search" name="search" value="@Context.Request.Query["search"]"
+               class="form-control" placeholder="Arama... (Konu, Gönderen)" />
+        <button type="submit" class="btn btn-dark"><i class="fa fa-search"></i></button>
+    </div>
+</form>
+
+<form method="post" action="/Message/ChangeMessageStatus">
+    <div class="toolbar mb-3">
+        <div class="btn-group">
+            <button type="button" class="btn btn-dark dropdown-toggle" data-toggle="dropdown">
+                Gelen Mesajlar
+            </button>
+            <div class="dropdown-menu">
+                <button type="submit" class="dropdown-item">Okundu Olarak İşaretle</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="email-list m-t-15">
+        @foreach (var item in Model)
+        {
+            string status = item.IsRead ? "table-light" : "font-weight-bold";
+            <div class="message @status">
+                <a href="/Message/MessageDetail/@item.MessageId" class="d-flex">
+                    <div class="col-mail col-mail-1">
+                        <div class="email-checkbox">
+                            <input type="checkbox" id="chk_@item.MessageId" name="messageId" value="@item.MessageId">
+                            <label class="toggle" for="chk_@item.MessageId"></label>
+                        </div>
+                        <span class="star-toggle ti-star"></span>
+                    </div>
+                    <div class="col-mail col-mail-2">
+                        <div class="subject">@item.Subject</div>
+                        <div class="date">@item.SendDate.ToString("dd-MMM-yyyy")</div>
+                    </div>
+                </a>
+            </div>
+        }
+    </div>
+
+    <button type="submit" formaction="/Message/MoveToTrash" class="btn btn-danger mt-3">
+        Seçilenleri Çöp Kutusuna Taşı
+    </button>
+</form>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        @if (TempData["MessageStatusChanged"] != null)
+        {
+            <text>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'İşlem Başarılı!',
+                    text: '@TempData["MessageStatusChanged"]',
+                    confirmButtonText: 'Tamam'
+                });
+            </text>
+        }
+    </script>
+}
+
+
+
+
+@* @model List<IdentityProject.Entities.Message>
+@{
+    ViewData["Title"] = "Inbox";
+    Layout = "~/Views/Shared/_MessageLayout.cshtml";
+}
+
+<form method="get" action="@Context.Request.Path" class="mb-3">
+    <div class="input-group">
+        <input type="search"
+               name="search"
+               value="@Context.Request.Query["search"]"
+               class="form-control"
+               placeholder="Arama... (Konu, Gönderen)"
+               aria-label="Search Messages" />
+        <button type="submit" class="btn btn-dark">
+            <i class="fa fa-search"></i>
+        </button>
+    </div>
+</form>
+
+<form method="post" action="/Message/ChangeMessageStatus">
+    <div role="toolbar" class="toolbar mb-3">
+        <div class="btn-group">
+            <button type="button" class="btn btn-dark dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                Gelen Mesajlar <span class="caret m-l-5"></span>
+            </button>
+            <div class="dropdown-menu">
+                <button type="submit" class="dropdown-item">Okundu Olarak İşaretle</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="email-list m-t-15">
+        @foreach (var item in Model)
+        {
+            string status = item.IsRead ? "table-light" : "font-weight-bold";
+            <div class="message @status">
+                <a href="/Message/MessageDetail/@item.MessageId" class="d-flex">
+                    <div class="col-mail col-mail-1">
+                        <div class="email-checkbox">
+                            <input type="checkbox" id="chk_@item.MessageId" name="messageId" value="@item.MessageId" class="message-checkbox">
+                            <label class="toggle" for="chk_@item.MessageId"></label>
+                        </div>
+                        <span class="star-toggle ti-star"></span>
+                    </div>
+                    <div class="col-mail col-mail-2">
+                        <div class="subject">@item.Subject</div>
+                        <div class="date">@item.SendDate.ToString("dd-MMM-yyyy")</div>
+                    </div>
+                </a>
+            </div>
+        }
+    </div>
+
+    <!-- Çöp Kutusuna Taşıma Butonu -->
+    <button type="submit" formaction="/Message/MoveToTrash" class="btn btn-danger mt-3">
+        Seçilenleri Çöp Kutusuna Taşı
+    </button>
+</form>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        @if (TempData["MessageStatusChanged"] != null)
+        {
+            <text>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'İşlem Başarılı!',
+                    text: '@TempData["MessageStatusChanged"]',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Tamam'
+                });
+            </text>
+        }
+    </script>
+}
+
+
+ *@
